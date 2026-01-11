@@ -54,10 +54,10 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-sm">
+    <nav className="sticky top-0 z-50 bg-white border-b">
       <div className="max-w-7xl mx-auto px-4">
 
-        {/* Top Bar */}
+        {/* ---------- TOP BAR ---------- */}
         <div className="flex h-16 items-center justify-between">
 
           {/* Logo */}
@@ -67,22 +67,23 @@ export default function Navbar() {
               setCategory("all")
               setMobileOpen(false)
             }}
-            className="text-2xl font-bold text-indigo-600"
+            className="text-xl sm:text-2xl font-bold text-indigo-600"
           >
             Products
           </Link>
 
-          {/* Desktop Categories */}
-          <div className="hidden md:flex items-center gap-2 bg-gray-100 p-2 rounded-full">
+          {/* ---------- DESKTOP NAV ---------- */}
+          <div className="hidden lg:flex items-center gap-2 bg-gray-100 p-2 rounded-full">
             {categories.map((cat) => (
               <Link
                 key={cat.value}
                 href="/"
                 onClick={() => setCategory(cat.value)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition
-                  ${category === cat.value
-                    ? "bg-indigo-600 text-white shadow"
-                    : "text-gray-600 hover:text-indigo-600"
+                  ${
+                    category === cat.value
+                      ? "bg-indigo-600 text-white shadow"
+                      : "text-gray-600 hover:text-indigo-600"
                   }`}
               >
                 {cat.label}
@@ -90,48 +91,46 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Right Side */}
-          <div className="flex items-center gap-3">
+          {/* ---------- RIGHT ACTIONS ---------- */}
+          <div className="flex items-center gap-2 sm:gap-3">
 
             {/* Favorites */}
             <Link
               href="/"
               onClick={() => setCategory("favorites")}
-              className="relative rounded-full border border-gray-300 px-4 py-2
-                         text-sm font-semibold text-gray-700 hover:border-red-500
-                         hover:text-red-500 transition"
+              className="relative rounded-full border px-3 py-2 text-sm
+                         hover:border-red-500 hover:text-red-500 transition"
             >
-              ❤️ Favorites
+              ❤️
               {favoritesCount > 0 && (
-                <span className="absolute -top-2 -right-2 min-w-[18px] h-[18px]
+                <span className="absolute -top-2 -right-2 h-5 min-w-[20px]
                                  rounded-full bg-red-500 text-white text-xs
-                                 flex items-center justify-center">
+                                 flex items-center justify-center px-1">
                   {favoritesCount}
                 </span>
               )}
             </Link>
 
-            {/* 🛒 Cart → /cart */}
+            {/* Cart */}
             <Link
               href="/cart"
-              className="relative rounded-full border border-gray-300 px-4 py-2
-                         text-sm font-semibold text-gray-700 hover:border-indigo-600
-                         hover:text-indigo-600 transition"
+              className="relative rounded-full border px-3 py-2 text-sm
+                         hover:border-indigo-600 hover:text-indigo-600 transition"
             >
-              🛒 Cart
+              🛒
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 min-w-[18px] h-[18px]
+                <span className="absolute -top-2 -right-2 h-5 min-w-[20px]
                                  rounded-full bg-indigo-600 text-white text-xs
-                                 flex items-center justify-center">
+                                 flex items-center justify-center px-1">
                   {cartCount}
                 </span>
               )}
             </Link>
 
-            {/* Contact */}
+            {/* Contact (Desktop Only) */}
             <a
               href="mailto:ktanmay1130@email.com"
-              className="hidden sm:inline-flex rounded-full bg-indigo-600 px-4 py-2
+              className="hidden md:inline-flex rounded-full bg-indigo-600 px-4 py-2
                          text-sm font-semibold text-white hover:bg-indigo-700 transition"
             >
               Contact
@@ -140,7 +139,7 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden rounded-md border p-2"
+              className="lg:hidden rounded-md border p-2"
               aria-label="Toggle menu"
             >
               ☰
@@ -148,11 +147,12 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* ---------- MOBILE MENU ---------- */}
         {mobileOpen && (
-          <div className="md:hidden pb-4">
-            <div className="mt-3 flex flex-col gap-2 rounded-xl bg-gray-100 p-3">
+          <div className="lg:hidden pb-4">
+            <div className="mt-3 space-y-2 rounded-xl bg-gray-100 p-3">
 
+              {/* Categories */}
               {categories.map((cat) => (
                 <Link
                   key={cat.value}
@@ -161,17 +161,18 @@ export default function Navbar() {
                     setCategory(cat.value)
                     setMobileOpen(false)
                   }}
-                  className={`rounded-lg px-4 py-2 text-sm font-medium transition
-                    ${category === cat.value
-                      ? "bg-indigo-600 text-white"
-                      : "text-gray-700 hover:bg-gray-200"
+                  className={`block rounded-lg px-4 py-2 text-sm font-medium transition
+                    ${
+                      category === cat.value
+                        ? "bg-indigo-600 text-white"
+                        : "text-gray-700 hover:bg-gray-200"
                     }`}
                 >
                   {cat.label}
                 </Link>
               ))}
 
-              {/* Mobile Favorites */}
+              {/* Favorites */}
               <Link
                 href="/"
                 onClick={() => {
@@ -189,7 +190,7 @@ export default function Navbar() {
                 )}
               </Link>
 
-              {/* Mobile Cart → /cart */}
+              {/* Cart */}
               <Link
                 href="/cart"
                 onClick={() => setMobileOpen(false)}
@@ -204,9 +205,10 @@ export default function Navbar() {
                 )}
               </Link>
 
+              {/* Contact */}
               <a
                 href="mailto:ktanmay1130@email.com"
-                className="mt-2 rounded-lg bg-indigo-600 px-4 py-2 text-center
+                className="block rounded-lg bg-indigo-600 px-4 py-2 text-center
                            text-sm font-semibold text-white hover:bg-indigo-700"
               >
                 Contact Me
