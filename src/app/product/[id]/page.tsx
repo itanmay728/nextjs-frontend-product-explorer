@@ -1,27 +1,76 @@
-export const runtime = "nodejs";
+"use client"
+
+import { useEffect, useState } from "react"
+import { useParams, useRouter } from "next/navigation"
 import { getProductById } from "@/assets/api"
 import ProductActions from "@/components/ProductActions"
-import { notFound } from "next/navigation"
+import { Product } from "@/types/product"
 
-interface Props {
-  params: Promise<{ id: string }>
-}
+export default function ProductDetails() {
+  const params = useParams()
+  const router = useRouter()
 
-export default async function ProductDetails({ params }: Props) {
-  const { id } = await params
-  const productId = Number(id)
+  const [product, setProduct] = useState<Product | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  if (Number.isNaN(productId)) {
-    notFound()
+  useEffect(() => {
+    const id = Number(params.id)
+
+    if (!Number.isInteger(id)) {
+      router.replace("/404")
+      return
+    }
+
+    async function fetchProduct() {
+      try {
+        const data = await getProductById(id)
+
+        if (!data) {
+          throw new Error("Failed to load product")
+        }
+
+        setProduct(data)
+      } catch (err) {
+        setError("Failed to load product")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProduct()
+  }, [params.id, router])
+
+  /* ---------------- LOADING ---------------- */
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin h-10 w-10 border-4 border-indigo-600 border-t-transparent rounded-full" />
+      </div>
+    )
   }
 
-  const product = await getProductById(productId)
-
-
-  if (!product) {
-    notFound()
+  /* ---------------- ERROR ---------------- */
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center text-center">
+        <h2 className="text-xl font-bold text-red-600">
+          Failed to load product
+        </h2>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 rounded bg-indigo-600 px-4 py-2 text-white"
+        >
+          Retry
+        </button>
+      </div>
+    )
   }
 
+  /* ---------------- SAFETY ---------------- */
+  if (!product) return null
+
+  /* ---------------- UI ---------------- */
   return (
     <div className="bg-gray-50 min-h-screen py-10">
       <div className="max-w-6xl mx-auto px-4">
@@ -32,7 +81,7 @@ export default async function ProductDetails({ params }: Props) {
             <img
               src={product.image}
               alt={product.title}
-              className="max-h-[400px] object-contain hover:scale-105 transition"
+              className="max-h-100 object-contain hover:scale-105 transition"
             />
           </div>
 
@@ -72,7 +121,7 @@ export default async function ProductDetails({ params }: Props) {
               </p>
             </div>
 
-            {/* 🔥 Client Actions */}
+            {/* Client Actions */}
             <ProductActions product={product} />
 
             <div className="pt-4 text-sm text-gray-500">

@@ -80,10 +80,9 @@ export default function Navbar() {
                 href="/"
                 onClick={() => setCategory(cat.value)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition
-                  ${
-                    category === cat.value
-                      ? "bg-indigo-600 text-white shadow"
-                      : "text-gray-600 hover:text-indigo-600"
+                  ${category === cat.value
+                    ? "bg-indigo-600 text-white shadow"
+                    : "text-gray-600 hover:text-indigo-600"
                   }`}
               >
                 {cat.label}
@@ -163,10 +162,9 @@ export default function Navbar() {
                     setMobileOpen(false)
                   }}
                   className={`rounded-lg px-4 py-2 text-sm font-medium transition
-                    ${
-                      category === cat.value
-                        ? "bg-indigo-600 text-white"
-                        : "text-gray-700 hover:bg-gray-200"
+                    ${category === cat.value
+                      ? "bg-indigo-600 text-white"
+                      : "text-gray-700 hover:bg-gray-200"
                     }`}
                 >
                   {cat.label}
