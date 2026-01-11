@@ -1,3 +1,4 @@
+export const runtime = "nodejs";
 import { getProductById } from "@/assets/api"
 import ProductActions from "@/components/ProductActions"
 import { notFound } from "next/navigation"
