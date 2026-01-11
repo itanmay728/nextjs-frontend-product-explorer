@@ -1,5 +1,6 @@
 import { getProductById } from "@/assets/api"
 import ProductActions from "@/components/ProductActions"
+import { notFound } from "next/navigation"
 
 interface Props {
   params: Promise<{ id: string }>
@@ -10,10 +11,15 @@ export default async function ProductDetails({ params }: Props) {
   const productId = Number(id)
 
   if (Number.isNaN(productId)) {
-    throw new Error("Invalid product ID")
+    notFound()
   }
 
   const product = await getProductById(productId)
+
+
+  if (!product) {
+    notFound()
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen py-10">
