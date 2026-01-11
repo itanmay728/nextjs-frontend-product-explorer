@@ -1,8 +1,6 @@
-import { getProducts } from "@/assets/api"
 import ProductGrid from "@/components/ProductGrid"
 
-export default async function HomePage() {
-  const products = await getProducts()
+export default async function HomePage() { 
 
   return (
     <main className="p-4">
